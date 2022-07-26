@@ -14,7 +14,7 @@ const Dashboard = () => (
   <>
     <Head>
       <title>
-        Dashboard | Material Kit
+        Ask IT - Dashboard
       </title>
     </Head>
     <Box
@@ -45,7 +45,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TotalCustomers />
+            <Budget />
           </Grid>
           <Grid
             item
@@ -54,7 +54,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TasksProgress />
+            <Budget />
           </Grid>
           <Grid
             item
@@ -63,7 +63,7 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <TotalProfit sx={{ height: '100%' }} />
+            <Budget />
           </Grid>
           <Grid
             item
@@ -83,31 +83,13 @@ const Dashboard = () => (
           >
             <TrafficByDevice sx={{ height: '100%' }} />
           </Grid>
-          <Grid
-            item
-            lg={4}
-            md={6}
-            xl={3}
-            xs={12}
-          >
-            <LatestProducts sx={{ height: '100%' }} />
-          </Grid>
-          <Grid
-            item
-            lg={8}
-            md={12}
-            xl={9}
-            xs={12}
-          >
-            <LatestOrders />
-          </Grid>
         </Grid>
       </Container>
     </Box>
   </>
 );
 
-Dashboard.getLayout = (page) => (
+Dashboard.getLayout = (page) => ( 
   <DashboardLayout>
     {page}
   </DashboardLayout>

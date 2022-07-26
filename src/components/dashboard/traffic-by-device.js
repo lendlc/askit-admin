@@ -10,14 +10,14 @@ export const TrafficByDevice = (props) => {
   const data = {
     datasets: [
       {
-        data: [63, 15, 22],
-        backgroundColor: ['#3F51B5', '#e53935', '#FB8C00'],
+        data: [15, 22],
+        backgroundColor: ['#293462', '#FEB139'],
         borderWidth: 8,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Desktop', 'Tablet', 'Mobile']
+    labels: ['Tutees', 'Tutors',]
   };
 
   const options = {
@@ -44,28 +44,20 @@ export const TrafficByDevice = (props) => {
 
   const devices = [
     {
-      title: 'Desktop',
-      value: 63,
-      icon: LaptopMacIcon,
-      color: '#3F51B5'
-    },
-    {
-      title: 'Tablet',
-      value: 15,
-      icon: TabletIcon,
-      color: '#E53935'
-    },
-    {
-      title: 'Mobile',
+      title: 'Tutees',
       value: 23,
-      icon: PhoneIcon,
-      color: '#FB8C00'
-    }
+      color: '#FEB139'
+    },
+    {
+      title: 'Tutors',
+      value: 15,
+      color: '#293462'
+    },
   ];
 
   return (
     <Card {...props}>
-      <CardHeader title="Traffic by Device" />
+      <CardHeader title="User Types" />
       <Divider />
       <CardContent>
         <Box
@@ -88,7 +80,6 @@ export const TrafficByDevice = (props) => {
         >
           {devices.map(({
             color,
-            icon: Icon,
             title,
             value
           }) => (
@@ -99,7 +90,6 @@ export const TrafficByDevice = (props) => {
                 textAlign: 'center'
               }}
             >
-              <Icon color="action" />
               <Typography
                 color="textPrimary"
                 variant="body1"

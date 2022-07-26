@@ -9,7 +9,7 @@ const Customers = () => (
   <>
     <Head>
       <title>
-        Customers | Material Kit
+        Ask IT - Tutors
       </title>
     </Head>
     <Box
