@@ -7,6 +7,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { theme } from '../theme';
 
+import { UserContext } from '../../context/UserContext/index'
+import { useState } from 'react';
+
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
@@ -14,24 +17,28 @@ const App = (props) => {
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
+  const [user, setUser] = useState(null)
+
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>
-          Material Kit Pro
-        </title>
-        <meta
-          name="viewport"
-          content="initial-scale=1, width=device-width"
-        />
-      </Head>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </LocalizationProvider>
-    </CacheProvider>
+    <UserContext.Provider value={{user, setUser}}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>
+            Material Kit Pro
+          </title>
+          <meta
+            name="viewport"
+            content="initial-scale=1, width=device-width"
+          />
+        </Head>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </LocalizationProvider>
+      </CacheProvider>
+    </UserContext.Provider>
   );
 };
 

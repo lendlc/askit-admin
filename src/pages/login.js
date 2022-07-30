@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 
 const Login = () => {
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -25,11 +26,14 @@ const Login = () => {
         .required('Password is required')
     }),
     onSubmit: () => {
-      //formik.setSubmitting(false) to renable login button
-      router.push('/');
+      formik.setSubmitting(false) //to renable login button
+
+      const data = {"id":3, "email": "test@gmail.com"}
+      localStorage.setItem('user', JSON.stringify(data))
+      router.reload(window.location.pathname) //force reload?
     }
   });
-  console.log(formik.isSubmitting)
+
   return (
     <>
       <Head>

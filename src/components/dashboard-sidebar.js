@@ -1,20 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { ChartBar as ChartBarIcon } from '../icons/chart-bar';
-import { Cog as CogIcon } from '../icons/cog';
-import { Lock as LockIcon } from '../icons/lock';
-import { Selector as SelectorIcon } from '../icons/selector';
-import { ShoppingBag as ShoppingBagIcon } from '../icons/shopping-bag';
-import { User as UserIcon } from '../icons/user';
-import { UserAdd as UserAddIcon } from '../icons/user-add';
 import { Users as UsersIcon } from '../icons/users';
-import { XCircle as XCircleIcon } from '../icons/x-circle';
-import { Logo } from './logo';
 import { NavItem } from './nav-item';
+
+import { UserContext } from '../../context/UserContext/index'
+
 
 const items = [
   {
@@ -52,11 +46,11 @@ const items = [
   //   icon: (<CogIcon fontSize="small" />),
   //   title: 'Settings'
   // },
-  {
-    href: '/login',
-    icon: (<LockIcon fontSize="small" />),
-    title: 'Login'
-  },
+  // {
+  //   href: '/logout',
+  //   //icon: (<LockIcon fontSize="small" />),
+  //   title: 'Logout'
+  // },
   // {
   //   href: '/register',
   //   icon: (<UserAddIcon fontSize="small" />),
@@ -76,6 +70,8 @@ export const DashboardSidebar = (props) => {
     defaultMatches: true,
     noSsr: false
   });
+
+  const { user, setUser } = useContext(UserContext)
 
   useEffect(
     () => {
@@ -142,6 +138,24 @@ export const DashboardSidebar = (props) => {
           ))}
         </Box>
         <Divider sx={{ borderColor: '#2D3748' }} />
+        <Button 
+          onClick={()=>{
+            //api call here
+            localStorage.removeItem('user')
+            setUser(null)
+          }}
+          sx={{
+            '&:hover': {
+              backgroundColor: 'rgba(255,255,255, 0.08)'
+            }
+          }}>
+          <Typography
+            color="neutral.300"
+            variant="subtitle1"
+          >
+            Logout
+          </Typography>
+        </Button>
       </Box>
     </>
   );

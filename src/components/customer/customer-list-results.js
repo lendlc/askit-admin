@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -15,12 +12,19 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { getInitials } from '../../utils/get-initials';
+import { cus_data } from '../../__mocks__/customers';
 
-export const CustomerListResults = ({ customers, ...rest }) => {
+export const CustomerListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+
+  const [customers, setCustomers] = useState([])
+
+  useEffect(()=>{
+    setCustomers(cus_data)
+    console.log(customers)
+  }, [])
 
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
@@ -139,6 +143,6 @@ export const CustomerListResults = ({ customers, ...rest }) => {
   );
 };
 
-CustomerListResults.propTypes = {
-  customers: PropTypes.array.isRequired
-};
+// CustomerListResults.propTypes = {
+//   customers: PropTypes.array.isRequired
+// };
