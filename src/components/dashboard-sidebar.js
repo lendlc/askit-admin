@@ -19,15 +19,10 @@ const items = [
   {
     href: '/customers',
     icon: (<UsersIcon fontSize="small" />),
-    title: 'Tutors'
+    title: 'Users'
   },
   {
-    href: '/customers',
-    icon: (<UsersIcon fontSize="small" />),
-    title: 'Tutees'
-  },
-  {
-    href: '/customers',
+    href: '/appointments',
     icon: (<UsersIcon fontSize="small" />),
     title: 'Appointments'
   },

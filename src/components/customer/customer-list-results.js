@@ -13,6 +13,7 @@ import {
   Typography
 } from '@mui/material';
 import { cus_data } from '../../__mocks__/customers';
+import useApi from 'src/utils/http';
 
 export const CustomerListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
@@ -21,11 +22,20 @@ export const CustomerListResults = ({ ...rest }) => {
 
   const [customers, setCustomers] = useState([])
 
+  const getUser = async () => {
+    const { data, code } = await useApi('GET', '/admin/users/')
+
+    if(code >= 200) {
+      setCustomers(data)
+    }
+  }
+
   useEffect(()=>{
-    setCustomers(cus_data)
-    console.log(customers)
+    getUser()
   }, [])
 
+  
+  //?
   const handleSelectAll = (event) => {
     let newSelectedCustomerIds;
 
@@ -80,13 +90,13 @@ export const CustomerListResults = ({ ...rest }) => {
                   Email
                 </TableCell>
                 <TableCell>
+                  Role
+                </TableCell>
+                <TableCell>
                   Last Login
                 </TableCell>
                 <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Registration date
+                  Date Registered
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -108,7 +118,7 @@ export const CustomerListResults = ({ ...rest }) => {
                         color="textPrimary"
                         variant="body1"
                       >
-                        {customer.name}
+                        {customer.get_full_name}
                       </Typography>
                     </Box>
                   </TableCell>
@@ -116,13 +126,13 @@ export const CustomerListResults = ({ ...rest }) => {
                     {customer.email}
                   </TableCell>
                   <TableCell>
-                    {`${customer.address.city}, ${customer.address.state}, ${customer.address.country}`}
+                    {customer.role.toUpperCase()}
                   </TableCell>
                   <TableCell>
-                    {customer.phone}
+                    {customer.last_login ? format(new Date(customer.date_joined).getTime(), 'MM/dd/yyyy - HH:MM') : 'N/A'} 
                   </TableCell>
                   <TableCell>
-                    {format(customer.createdAt, 'dd/MM/yyyy')}
+                    {format(new Date(customer.date_joined).getTime(), 'MM/dd/yyyy')}
                   </TableCell>
                 </TableRow>
               ))}

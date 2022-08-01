@@ -5,9 +5,9 @@ const useApi = async (method, path, req, header, auth = null) => {
   //const { data, code } = await useApi('GET/DELETE', '/sample_path/')
   //const { data, code } = await useApi('POST/PUT', '/sample_path/', {request data})
 
-  const base_url = 'https://jsonplaceholder.typicode.com'
+  const base_url = 'http://127.0.0.1:8000/api/v1'
   const ENDPOINT = `${base_url}${path}`
-  const KEY =  localStorage.getItem('token')
+  const KEY = 'f5b0c349138f2672112c332a67e07a02b6126ff1' //localStorage.getItem('token')
 
   let config = {
     url: ENDPOINT,
@@ -35,6 +35,26 @@ const useApi = async (method, path, req, header, auth = null) => {
   //In instances of POST and PUT requests
   if (req) {
     config.data = req
+  }
+
+  try {
+    let response = await axios(config)
+    let code = response.status
+    let data = response.data
+
+    if (code >= 200 && code < 300) {
+      console.log('Success: ' + code, path)
+      return { data, code }
+    } else {
+      console.log('Failed: ' + code, path)
+      return { data, code }
+    }
+    } catch (error) {
+    if (error === 'Error: Network Error') {
+      alert(error)
+    } else {
+      console.warn('Error: ' + error)
+    }
   }
 }
 

@@ -1,15 +1,15 @@
 import Head from 'next/head';
 import { Box, Container } from '@mui/material';
-import { CustomerListResults } from '../components/customer/customer-list-results';
+import { AppointmentListResults } from '../components/appointment/appointment-list-results';
 import { CustomerListToolbar } from '../components/customer/customer-list-toolbar';
 import { DashboardLayout } from '../components/dashboard-layout';
 
 
-const Customers = () => (
+const Appointments = () => (
   <>
     <Head>
       <title>
-        Ask IT - Users
+        Ask IT - Appointments
       </title>
     </Head>
     <Box
@@ -20,19 +20,19 @@ const Customers = () => (
       }}
     >
       <Container maxWidth={false}>
-        <CustomerListToolbar title='Users' />
+        <CustomerListToolbar title='Appointments'/> 
         <Box sx={{ mt: 3 }}>
-          <CustomerListResults/>
+          <AppointmentListResults/> 
         </Box>
       </Container>
     </Box>
   </>
 );
 
-Customers.getLayout = (page) => (
+Appointments.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-export default Customers;
+export default Appointments;

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, IconButton, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import { Bell as BellIcon } from '../icons/bell';
-import { UserCircle as UserCircleIcon } from '../icons/user-circle';
-import { Users as UsersIcon } from '../icons/users';
+import { useContext } from 'react';
+import { UserContext } from 'context/UserContext';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -14,6 +12,8 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar = (props) => {
   const { onSidebarOpen, ...other } = props;
+  const { user } = useContext(UserContext)
+  const user_json = JSON.parse(user)
 
   return (
     <>
@@ -44,19 +44,15 @@ export const DashboardNavbar = (props) => {
               }
             }}
           >
-            <MenuIcon fontSize="small" />
+          <MenuIcon fontSize="small" />
           </IconButton>
-          
-          <Avatar
-            sx={{
-              height: 40,
-              width: 40,
-              ml: 1,
-            }}
-            src="/static/images/avatars/avatar_1.png"
-          >
-            <UserCircleIcon fontSize="small" />
-          </Avatar>
+            <Typography
+              color="textPrimary"
+              sx={{ m: 1 }}
+              variant="h7"
+            >
+              Logged in as: {user_json.email}
+            </Typography>
         </Toolbar>
       </DashboardNavbarRoot>
     </>

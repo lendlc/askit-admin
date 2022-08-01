@@ -1,15 +1,7 @@
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  TextField,
-  InputAdornment,
-  SvgIcon, Typography
+  Typography
 } from '@mui/material';
-import { Search as SearchIcon } from '../../icons/search';
-import { Upload as UploadIcon } from '../../icons/upload';
-import { Download as DownloadIcon } from '../../icons/download';
 
 export const CustomerListToolbar = (props) => (
   <Box {...props}>
@@ -26,7 +18,7 @@ export const CustomerListToolbar = (props) => (
         sx={{ m: 1 }}
         variant="h4"
       >
-        Tutors
+        {props.title} {/* made dynamic */}
       </Typography>
     </Box>
   </Box>

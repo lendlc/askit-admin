@@ -24,9 +24,8 @@ export const DashboardLayout = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   
   useEffect(()=>{
-    setUser(localStorage.getItem('user' || null))
+    setUser(localStorage.getItem('user'))
     setIsLoggedIn(user ? true : false)
-    console.log("USER:", user)
   },[user])
   
 
