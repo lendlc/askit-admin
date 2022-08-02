@@ -7,7 +7,9 @@ const useApi = async (method, path, req, header, auth = null) => {
 
   const base_url = 'http://127.0.0.1:8000/api/v1'
   const ENDPOINT = `${base_url}${path}`
-  const KEY = 'f5b0c349138f2672112c332a67e07a02b6126ff1' //localStorage.getItem('token')
+  const KEY = JSON.parse(localStorage.getItem('user'))?.token ?? null
+
+  console.log("KEY", KEY)
 
   let config = {
     url: ENDPOINT,

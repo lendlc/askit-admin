@@ -50,8 +50,8 @@ export const DashboardNavbar = (props) => {
               color="textPrimary"
               sx={{ m: 1 }}
               variant="h7"
-            >
-              Logged in as: {user_json?.email}
+          >
+              Logged in as: {user_json?.email ?? 'Ask IT Admin'}
             </Typography>
         </Toolbar>
       </DashboardNavbarRoot>

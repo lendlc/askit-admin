@@ -1,11 +1,14 @@
 import Head from 'next/head';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import useApi from 'src/utils/http';
+import { useState } from 'react';
+
 
 const Login = () => {
+  const [authError, setAuthError] = useState("")
 
   const router = useRouter();
   const formik = useFormik({
@@ -25,12 +28,28 @@ const Login = () => {
         .max(255)
         .required('Password is required')
     }),
-    onSubmit: () => {
-      formik.setSubmitting(false) //to renable login button
+    onSubmit: async () => {
+      formik.setSubmitting(false)
 
-      const data = {"id":3, "email": "test@gmail.com"}
-      localStorage.setItem('user', JSON.stringify(data))
-      router.reload(window.location.pathname) //force reload?
+      const payload = {
+        "username": formik.values.email,
+        "password": formik.values.password
+      }
+
+      const { data, code } = await useApi('POST', '/auth/login/', payload)
+
+      if(code == 200 && data.role == '') {
+        localStorage.setItem('user', JSON.stringify(data))
+        router.reload(window.location.pathname) //force reload?
+      }
+
+      else if (code == 400) {
+        setAuthError("Invalid Credentials")
+      } else {
+        setAuthError("Unauthroized Access")
+      }
+      
+      formik.resetForm()
     }
   });
 
@@ -50,7 +69,7 @@ const Login = () => {
       >
         <Container maxWidth="sm">
           <form onSubmit={formik.handleSubmit}>
-            <Box sx={{ my: 3 }}>
+            <Box sx={{ my: 1 }}>
               <Typography
                 color="textPrimary"
                 variant="h4"
@@ -62,7 +81,7 @@ const Login = () => {
                 gutterBottom
                 variant="body2"
               >
-                pa grad nyo na ko plz
+                Admin portal for ASK IT mobile and web app
               </Typography>
             </Box>
         
@@ -74,7 +93,7 @@ const Login = () => {
               margin="normal"
               name="email"
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={e => {formik.handleChange(e), setAuthError("")}}
               type="email"
               value={formik.values.email}
               variant="outlined"
@@ -87,11 +106,17 @@ const Login = () => {
               margin="normal"
               name="password"
               onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={e => {formik.handleChange(e), setAuthError("")}}
               type="password"
               value={formik.values.password}
               variant="outlined"
             />
+            <Typography
+                color="#ff0000"
+                variant="body2"
+              >
+                {authError}
+          </Typography>
             <Box sx={{ py: 2 }}>
               <Button
                 color="primary"
