@@ -1,10 +1,25 @@
 import { Bar } from 'react-chartjs-2';
 import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { useState, useEffect } from 'react';
+import useApi from 'src/utils/http';
 
-export const Sales = (props) => {
+
+export const RegistrationData = (props) => {
   const theme = useTheme();
+
+  const [chartData, setChartData] = useState({})
+
+  const getChartData = async () => {
+    const { data, code } = await useApi('GET', '/admin/dashboard/line_chart/')
+
+    if(code >= 200) {
+      setChartData(data)
+    }
+  }
+
+  useEffect(()=>{
+    getChartData()
+  },[])
 
   const data = {
     datasets: [
@@ -14,8 +29,8 @@ export const Sales = (props) => {
         barThickness: 12,
         borderRadius: 4,
         categoryPercentage: 0.5,
-        data: [18, 5, 19, 27, 29, 19, 20],
-        label: 'This year',
+        data: chartData.tutees,
+        label: 'Tutee',
         maxBarThickness: 10
       },
       {
@@ -24,12 +39,12 @@ export const Sales = (props) => {
         barThickness: 12,
         borderRadius: 4,
         categoryPercentage: 0.5,
-        data: [11, 20, 12, 29, 30, 25, 13],
-        label: 'Last year',
+        data: chartData.tutors,
+        label: 'Tutor',
         maxBarThickness: 10
       }
     ],
-    labels: ['1 Aug', '2 Aug', '3 Aug', '4 Aug', '5 Aug', '6 Aug', '7 aug']
+    labels: chartData.labels
   };
 
   const options = {

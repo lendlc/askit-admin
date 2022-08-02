@@ -1,23 +1,36 @@
 import { Doughnut } from 'react-chartjs-2';
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import PhoneIcon from '@mui/icons-material/Phone';
-import TabletIcon from '@mui/icons-material/Tablet';
+import useApi from 'src/utils/http';
+import { useEffect, useState } from 'react';
 
-export const TrafficByDevice = (props) => {
+export const UserTypes = (props) => {
   const theme = useTheme();
+
+  const [chartData, setChartData] = useState({})
+
+  const getChartData = async () => {
+    const { data, code } = await useApi('GET', '/admin/dashboard/donut_chart/')
+
+    if(code >= 200) {
+      setChartData(data)
+    }
+  }
+
+  useEffect(()=>{
+    getChartData()
+  },[])
 
   const data = {
     datasets: [
       {
-        data: [15, 22],
+        data: chartData.donut,
         backgroundColor: ['#293462', '#FEB139'],
-        borderWidth: 8,
+        borderWidth: 2,
         borderColor: '#FFFFFF',
         hoverBorderColor: '#FFFFFF'
       }
     ],
-    labels: ['Tutees', 'Tutors',]
+    labels: ['Tutees', 'Tutors']
   };
 
   const options = {
@@ -45,13 +58,11 @@ export const TrafficByDevice = (props) => {
   const devices = [
     {
       title: 'Tutees',
-      value: 23,
-      color: '#FEB139'
+      value: chartData.tutee_percentage,
     },
     {
       title: 'Tutors',
-      value: 15,
-      color: '#293462'
+      value: chartData.tutor_percentage,  
     },
   ];
 

@@ -1,17 +1,28 @@
 import Head from 'next/head';
 import { Box, Container, Grid } from '@mui/material';
-import { Budget } from '../components/dashboard/budget';
-import { LatestOrders } from '../components/dashboard/latest-orders';
-import { LatestProducts } from '../components/dashboard/latest-products';
-import { Sales } from '../components/dashboard/sales';
-import { TasksProgress } from '../components/dashboard/tasks-progress';
-import { TotalCustomers } from '../components/dashboard/total-customers';
-import { TotalProfit } from '../components/dashboard/total-profit';
-import { TrafficByDevice } from '../components/dashboard/traffic-by-device';
+import { DashboardCard } from '../components/dashboard/card';
+import { RegistrationData } from '../components/dashboard/registration-data';
+import { UserTypes } from '../components/dashboard/user-types';
 import { DashboardLayout } from '../components/dashboard-layout';
+import { useEffect, useState } from 'react';
+import useApi from 'src/utils/http';
 
-const Dashboard = () => (
-  <>
+const Dashboard = () => {
+  const [cardData, setCardData] = useState({})
+
+  const getCardData = async () => {
+    const { data, code } = await useApi('GET', '/admin/dashboard/cards/')
+
+    if(code >= 200) {
+      setCardData(data)
+    }
+  }
+
+  useEffect(()=>{
+    getCardData()
+  },[])
+
+  return <>
     <Head>
       <title>
         Ask IT - Dashboard
@@ -36,7 +47,10 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <Budget />
+            <DashboardCard 
+              title='Tutees' 
+              count={cardData.tutees}
+            />
           </Grid>
           <Grid
             item
@@ -45,7 +59,10 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <Budget />
+            <DashboardCard 
+              title='Tutors' 
+              count={cardData.tutors}
+            />
           </Grid>
           <Grid
             item
@@ -54,7 +71,10 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <Budget />
+            <DashboardCard 
+              title='Appointments' 
+              count={cardData.appointments}
+            />
           </Grid>
           <Grid
             item
@@ -63,7 +83,10 @@ const Dashboard = () => (
             sm={6}
             xs={12}
           >
-            <Budget />
+            <DashboardCard 
+              title='New Users' 
+              count={cardData.new_users}
+            />
           </Grid>
           <Grid
             item
@@ -72,7 +95,7 @@ const Dashboard = () => (
             xl={9}
             xs={12}
           >
-            <Sales />
+            <RegistrationData />
           </Grid>
           <Grid
             item
@@ -81,13 +104,13 @@ const Dashboard = () => (
             xl={3}
             xs={12}
           >
-            <TrafficByDevice sx={{ height: '100%' }} />
+            <UserTypes sx={{ height: '100%' }} />
           </Grid>
         </Grid>
       </Container>
     </Box>
   </>
-);
+}
 
 Dashboard.getLayout = (page) => ( 
     <DashboardLayout>
