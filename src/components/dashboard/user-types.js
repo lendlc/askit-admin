@@ -8,7 +8,7 @@ export const UserTypes = (props) => {
 
   const [chartData, setChartData] = useState({})
 
-  const getChartData = async () => {
+  const GetChartData = async () => {
     const { data, code } = await useApi('GET', '/admin/dashboard/donut_chart/')
 
     if(code >= 200) {
@@ -17,7 +17,7 @@ export const UserTypes = (props) => {
   }
 
   useEffect(()=>{
-    getChartData()
+    GetChartData()
   },[])
 
   const data = {

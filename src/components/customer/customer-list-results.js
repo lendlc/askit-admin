@@ -22,7 +22,7 @@ export const CustomerListResults = ({ ...rest }) => {
 
   const [customers, setCustomers] = useState([])
 
-  const getUser = async () => {
+  const GetUser = async () => {
     const { data, code } = await useApi('GET', '/admin/users/')
 
     if(code >= 200) {
@@ -31,7 +31,7 @@ export const CustomerListResults = ({ ...rest }) => {
   }
 
   useEffect(()=>{
-    getUser()
+    GetUser()
   }, [])
 
   

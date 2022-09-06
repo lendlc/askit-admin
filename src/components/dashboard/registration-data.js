@@ -9,7 +9,7 @@ export const RegistrationData = (props) => {
 
   const [chartData, setChartData] = useState({})
 
-  const getChartData = async () => {
+  const GetChartData = async () => {
     const { data, code } = await useApi('GET', '/admin/dashboard/line_chart/')
 
     if(code >= 200) {
@@ -18,7 +18,7 @@ export const RegistrationData = (props) => {
   }
 
   useEffect(()=>{
-    getChartData()
+    GetChartData()
   },[])
 
   const data = {

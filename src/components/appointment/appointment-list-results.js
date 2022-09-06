@@ -21,7 +21,7 @@ export const AppointmentListResults = ({ ...rest }) => {
 
   const [appointments, setAppointments] = useState([])
 
-  const getAppointments = async () => {
+  const GetAppointments = async () => {
     const { data, code } = await useApi('GET', '/admin/appointments/')
 
     if(code >= 200) {
@@ -30,7 +30,7 @@ export const AppointmentListResults = ({ ...rest }) => {
   }
 
   useEffect(()=>{
-    getAppointments()
+    GetAppointments()
   }, [])
 
   

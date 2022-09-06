@@ -10,6 +10,17 @@ import { useState } from 'react';
 const Login = () => {
   const [authError, setAuthError] = useState("")
 
+  const CallAuthAPI = async (payload) => {
+    const { data, code } = await useApi('POST', '/auth/login/', payload)
+
+    if(code == 200 && data.role == '') {
+      localStorage.setItem('user', JSON.stringify(data))
+      router.reload(window.location.pathname) //force reload?
+    }
+
+    return code
+  }
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -36,14 +47,9 @@ const Login = () => {
         "password": formik.values.password
       }
 
-      const { data, code } = await useApi('POST', '/auth/login/', payload)
+      const code = await CallAuthAPI(payload)
 
-      if(code == 200 && data.role == '') {
-        localStorage.setItem('user', JSON.stringify(data))
-        router.reload(window.location.pathname) //force reload?
-      }
-
-      else if (code == 400) {
+      if (code == 400) {
         setAuthError("Invalid Credentials")
       } else {
         setAuthError("Unauthroized Access")

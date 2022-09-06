@@ -10,7 +10,7 @@ import useApi from 'src/utils/http';
 const Dashboard = () => {
   const [cardData, setCardData] = useState({})
 
-  const getCardData = async () => {
+  const GetCardData = async () => {
     const { data, code } = await useApi('GET', '/admin/dashboard/cards/')
 
     if(code >= 200) {
@@ -19,7 +19,7 @@ const Dashboard = () => {
   }
 
   useEffect(()=>{
-    getCardData()
+    GetCardData()
   },[])
 
   return <>
