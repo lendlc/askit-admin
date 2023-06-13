@@ -52,7 +52,7 @@ const Login = () => {
       if (code == 400) {
         setAuthError("Invalid Credentials")
       } else {
-        setAuthError("Unauthroized Access")
+        // setAuthError("Unauthroized Access")
       }
       
       formik.resetForm()
