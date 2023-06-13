@@ -15,10 +15,12 @@ import {
 import { cus_data } from '../../__mocks__/customers';
 import useApi from 'src/utils/http';
 
+const rowsPerPageOptions = [5, 10, 25];
+
 export const CustomerListResults = ({ ...rest }) => {
   const [selectedCustomerIds, setSelectedCustomerIds] = useState([]);
-  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const [customers, setCustomers] = useState([])
 
@@ -68,13 +70,14 @@ export const CustomerListResults = ({ ...rest }) => {
     setSelectedCustomerIds(newSelectedCustomerIds);
   };
 
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
-  };
+   const handleChangePage = (event, newPage) => {
+     setPage(newPage);
+   };
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+   const handleChangeRowsPerPage = (event) => {
+     setRowsPerPage(parseInt(event.target.value, 10));
+     setPage(0);
+   };
 
   return (
     <Card {...rest}>
@@ -83,71 +86,58 @@ export const CustomerListResults = ({ ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Full Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Role
-                </TableCell>
-                <TableCell>
-                  Last Login
-                </TableCell>
-                <TableCell>
-                  Date Registered
-                </TableCell>
+                <TableCell>Full Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Role</TableCell>
+                <TableCell>Last Login</TableCell>
+                <TableCell>Date Registered</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {customers.slice(0, limit).map((customer) => (
-                <TableRow
-                  hover
-                  key={customer.id}
-                  selected={selectedCustomerIds.indexOf(customer.id) !== -1}
-                >
-                  <TableCell>
-                    <Box
-                      sx={{
-                        alignItems: 'center',
-                        display: 'flex'
-                      }}
-                    >
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
+              {customers
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((customer) => (
+                  <TableRow
+                    hover
+                    key={customer.id}
+                    selected={selectedCustomerIds.indexOf(customer.id) !== -1}
+                  >
+                    <TableCell>
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          display: "flex",
+                        }}
                       >
-                        {customer.get_full_name}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {customer.email}
-                  </TableCell>
-                  <TableCell>
-                    {customer.role.toUpperCase()}
-                  </TableCell>
-                  <TableCell>
-                    {customer.last_login ? format(new Date(customer.date_joined).getTime(), 'MM/dd/yyyy - HH:MM') : 'N/A'} 
-                  </TableCell>
-                  <TableCell>
-                    {format(new Date(customer.date_joined).getTime(), 'MM/dd/yyyy')}
-                  </TableCell>
-                </TableRow>
-              ))}
+                        <Typography color="textPrimary" variant="body1">
+                          {customer.get_full_name}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>{customer.email}</TableCell>
+                    <TableCell>{customer.role.toUpperCase()}</TableCell>
+                    <TableCell>
+                      {customer.last_login
+                        ? format(new Date(customer.date_joined).getTime(), "MM/dd/yyyy - HH:MM")
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>
+                      {format(new Date(customer.date_joined).getTime(), "MM/dd/yyyy")}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
       <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
         component="div"
         count={customers.length}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleLimitChange}
+        rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Card>
   );

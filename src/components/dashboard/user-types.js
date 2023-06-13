@@ -1,7 +1,9 @@
 import { Doughnut } from 'react-chartjs-2';
-import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme, IconButton } from '@mui/material';
 import useApi from 'src/utils/http';
 import { useEffect, useState } from 'react';
+import RefreshIcon from "@mui/icons-material/Refresh";
+
 
 export const UserTypes = (props) => {
   const theme = useTheme();
@@ -68,51 +70,42 @@ export const UserTypes = (props) => {
 
   return (
     <Card {...props}>
-      <CardHeader title="User Types" />
+      <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        <CardHeader title="User Types" />
+        <IconButton onClick={GetChartData}>
+          <RefreshIcon />
+        </IconButton>
+      </Box>
       <Divider />
       <CardContent>
         <Box
           sx={{
             height: 300,
-            position: 'relative'
+            position: "relative",
           }}
         >
-          <Doughnut
-            data={data}
-            options={options}
-          />
+          <Doughnut data={data} options={options} />
         </Box>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            pt: 2
+            display: "flex",
+            justifyContent: "center",
+            pt: 2,
           }}
         >
-          {devices.map(({
-            color,
-            title,
-            value
-          }) => (
+          {devices.map(({ color, title, value }) => (
             <Box
               key={title}
               sx={{
                 p: 1,
-                textAlign: 'center'
+                textAlign: "center",
               }}
             >
-              <Typography
-                color="textPrimary"
-                variant="body1"
-              >
+              <Typography color="textPrimary" variant="body1">
                 {title}
               </Typography>
-              <Typography
-                style={{ color }}
-                variant="h4"
-              >
-                {value}
-                %
+              <Typography style={{ color }} variant="h4">
+                {value}%
               </Typography>
             </Box>
           ))}

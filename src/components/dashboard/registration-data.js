@@ -1,50 +1,50 @@
-import { Bar } from 'react-chartjs-2';
-import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme } from '@mui/material';
-import { useState, useEffect } from 'react';
-import useApi from 'src/utils/http';
-
+import { Bar } from "react-chartjs-2";
+import { Box, Button, Card, CardContent, CardHeader, Divider, useTheme, IconButton } from "@mui/material";
+import { useState, useEffect } from "react";
+import useApi from "src/utils/http";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 export const RegistrationData = (props) => {
   const theme = useTheme();
 
-  const [chartData, setChartData] = useState({})
+  const [chartData, setChartData] = useState({});
 
   const GetChartData = async () => {
-    const { data, code } = await useApi('GET', '/admin/dashboard/line_chart/')
+    const { data, code } = await useApi("GET", "/admin/dashboard/line_chart/");
 
-    if(code >= 200) {
-      setChartData(data)
+    if (code >= 200) {
+      setChartData(data);
     }
-  }
+  };
 
-  useEffect(()=>{
-    GetChartData()
-  },[])
+  useEffect(() => {
+    GetChartData();
+  }, []);
 
   const data = {
     datasets: [
       {
-        backgroundColor: '#3F51B5',
+        backgroundColor: "#3F51B5",
         barPercentage: 0.5,
         barThickness: 12,
         borderRadius: 4,
         categoryPercentage: 0.5,
         data: chartData.tutees,
-        label: 'Tutee',
-        maxBarThickness: 10
+        label: "Tutee",
+        maxBarThickness: 10,
       },
       {
-        backgroundColor: '#EEEEEE',
+        backgroundColor: "#EEEEEE",
         barPercentage: 0.5,
         barThickness: 12,
         borderRadius: 4,
         categoryPercentage: 0.5,
         data: chartData.tutors,
-        label: 'Tutor',
-        maxBarThickness: 10
-      }
+        label: "Tutor",
+        maxBarThickness: 10,
+      },
     ],
-    labels: chartData.labels
+    labels: chartData.labels,
   };
 
   const options = {
@@ -57,20 +57,20 @@ export const RegistrationData = (props) => {
     xAxes: [
       {
         ticks: {
-          fontColor: theme.palette.text.secondary
+          fontColor: theme.palette.text.secondary,
         },
         gridLines: {
           display: false,
-          drawBorder: false
-        }
-      }
+          drawBorder: false,
+        },
+      },
     ],
     yAxes: [
       {
         ticks: {
           fontColor: theme.palette.text.secondary,
           beginAtZero: true,
-          min: 0
+          min: 0,
         },
         gridLines: {
           borderDash: [2],
@@ -79,9 +79,9 @@ export const RegistrationData = (props) => {
           drawBorder: false,
           zeroLineBorderDash: [2],
           zeroLineBorderDashOffset: [2],
-          zeroLineColor: theme.palette.divider
-        }
-      }
+          zeroLineColor: theme.palette.divider,
+        },
+      },
     ],
     tooltips: {
       backgroundColor: theme.palette.background.paper,
@@ -91,28 +91,29 @@ export const RegistrationData = (props) => {
       enabled: true,
       footerFontColor: theme.palette.text.secondary,
       intersect: false,
-      mode: 'index',
-      titleFontColor: theme.palette.text.primary
-    }
+      mode: "index",
+      titleFontColor: theme.palette.text.primary,
+    },
   };
 
   return (
     <Card {...props}>
-      <CardHeader
-        title="Registration Data"
-      />
+      <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+        <CardHeader title="Registration Data" />
+        <IconButton onClick={GetChartData}>
+          <RefreshIcon />
+        </IconButton>
+      </Box>
+
       <Divider />
       <CardContent>
         <Box
           sx={{
             height: 400,
-            position: 'relative'
+            position: "relative",
           }}
         >
-          <Bar
-            data={data}
-            options={options}
-          />
+          <Bar data={data} options={options} />
         </Box>
       </CardContent>
       <Divider />

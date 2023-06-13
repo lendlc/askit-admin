@@ -13,11 +13,12 @@ import {
   Typography
 } from '@mui/material';
 import useApi from 'src/utils/http';
+const rowsPerPageOptions = [5, 10, 25];
 
 export const AppointmentListResults = ({ ...rest }) => {
   const [selectedAppointmentIds, setSelectedAppointmentIds] = useState([]);
-  const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
 
   const [appointments, setAppointments] = useState([])
 
@@ -67,13 +68,14 @@ export const AppointmentListResults = ({ ...rest }) => {
   //   setSelectedCustomerIds(newSelectedCustomerIds);
   // };
 
-  const handleLimitChange = (event) => {
-    setLimit(event.target.value);
-  };
+   const handleChangePage = (event, newPage) => {
+     setPage(newPage);
+   };
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+   const handleChangeRowsPerPage = (event) => {
+     setRowsPerPage(parseInt(event.target.value, 10));
+     setPage(0);
+   };
 
   return (
     <Card {...rest}>
@@ -82,77 +84,59 @@ export const AppointmentListResults = ({ ...rest }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Tutor
-                </TableCell>
-                <TableCell>
-                  Tutee
-                </TableCell>
-                <TableCell>
-                  Schedule
-                </TableCell>
-                <TableCell>
-                  Duration in Minutes
-                </TableCell>
-                <TableCell>
-                  Description
-                </TableCell>
-                <TableCell>
-                  Status
-                </TableCell>
+                <TableCell>Tutor</TableCell>
+                <TableCell>Tutee</TableCell>
+                <TableCell>Schedule</TableCell>
+                <TableCell>Duration in Minutes</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {appointments.slice(0, limit).map((appointment) => (
-                <TableRow
-                  hover
-                  key={appointment.id}
-                  selected={selectedAppointmentIds.indexOf(appointment.id) !== -1}
-                >
-                  <TableCell>
-                    <Box
-                      sx={{
-                        alignItems: 'center',
-                        display: 'flex'
-                      }}
-                    >
-                      <Typography
-                        color="textPrimary"
-                        variant="body1"
+              {appointments
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((appointment) => (
+                  <TableRow
+                    hover
+                    key={appointment.id}
+                    selected={selectedAppointmentIds.indexOf(appointment.id) !== -1}
+                  >
+                    <TableCell>
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          display: "flex",
+                        }}
                       >
-                        {appointment.tutee_email}
-                      </Typography>
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    {appointment.tutor_email}
-                  </TableCell>
-                   <TableCell>
-                    {format(new Date(appointment.tutor_schedule.datetime_start).getTime(), 'MM/dd/yyyy')}
-                  </TableCell>
-                  <TableCell>
-                    {appointment.duration}
-                  </TableCell>
-                  <TableCell>
-                    {appointment.description} 
-                  </TableCell>
-                  <TableCell>
-                    {appointment.status.toUpperCase()}
-                  </TableCell>
-                </TableRow>
-              ))}
+                        <Typography color="textPrimary" variant="body1">
+                          {appointment.tutee_email}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>{appointment.tutor_email}</TableCell>
+                    <TableCell>
+                      {format(
+                        new Date(appointment.tutor_schedule.datetime_start).getTime(),
+                        "MM/dd/yyyy"
+                      )}
+                    </TableCell>
+                    <TableCell>{appointment.duration}</TableCell>
+                    <TableCell>{appointment.description}</TableCell>
+                    <TableCell>{appointment.status.toUpperCase()}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </Box>
       </PerfectScrollbar>
       <TablePagination
+        rowsPerPageOptions={rowsPerPageOptions}
         component="div"
         count={appointments.length}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleLimitChange}
+        rowsPerPage={rowsPerPage}
         page={page}
-        rowsPerPage={limit}
-        rowsPerPageOptions={[5, 10, 25]}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </Card>
   );
