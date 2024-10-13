@@ -4,6 +4,10 @@
       "source": "/(.*)",
       "headers": [
         {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; img-src https: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://askitcapstone.live;"
+        },
+        {
           "key": "X-Frame-Options",
           "value": "DENY"
         },
